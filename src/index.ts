@@ -20,7 +20,7 @@ function promptCallback(err: any, result: { generate_again?: string }) {
 }
 
 function generateWallet() {
-    const mnemonic = generateMnemonic()
+    const mnemonic = generateMnemonic(256)
     const wallet = ethers.Wallet.fromPhrase(mnemonic)
 
     console.log('Mnemonic: ' + mnemonic)

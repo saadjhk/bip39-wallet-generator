@@ -36,6 +36,7 @@ program.command('generate_mnemonic')
 
         console.log('Mnemonic: ' + mnemonic)
         console.log('EVM Address: ' + wallet.address)
+        process.exit(0)
     });
 
 program.command('generate_publickey')

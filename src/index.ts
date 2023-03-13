@@ -41,13 +41,12 @@ program.command('generate_mnemonic')
 program.command('generate_publickey')
     .description('Generate a wallet mnemonic')
     .action((_args) => {
-        console.log("Enter Mnemonic: ")
-        shouldBeMuted = true
-        rl.question('', (a) => {
+        rl.question('Enter Mnemonic: ', (a) => {
             const wallet = ethers.Wallet.fromPhrase(a)
-            console.log('Address: ' + wallet.address)
+            console.log('\nAddress: ' + wallet.address)
             process.exit(0)
         })
+        shouldBeMuted = true
     });
 
 program.parse();

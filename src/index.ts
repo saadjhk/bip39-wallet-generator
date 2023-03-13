@@ -1,6 +1,24 @@
 import { generateMnemonic } from 'bip39'
 import { program } from 'commander';
 import { ethers } from 'ethers'
+import { createInterface } from 'readline';
+import { Writable } from 'stream';
+
+let shouldBeMuted = false;
+
+var mutableStdout = new Writable({
+    write: function (chunk, encoding, callback) {
+        if (!shouldBeMuted)
+            process.stdout.write(chunk, encoding);
+        callback();
+    }
+});
+
+const rl = createInterface({
+    input: process.stdin,
+    output: mutableStdout,
+    terminal: true
+})
 
 program
     .name('bip39-wallet-utils')
@@ -22,10 +40,14 @@ program.command('generate_mnemonic')
 
 program.command('generate_publickey')
     .description('Generate a wallet mnemonic')
-    .requiredOption('-m, --mnemonic <phrase>', 'Mnemonic phrase')
-    .action((args) => {
-        const wallet = ethers.Wallet.fromPhrase(args.mnemonic)
-        console.log('EVM Address: ' + wallet.address)
+    .action((_args) => {
+        console.log("Enter Mnemonic: ")
+        shouldBeMuted = true
+        rl.question('', (a) => {
+            const wallet = ethers.Wallet.fromPhrase(a)
+            console.log('Address: ' + wallet.address)
+            process.exit(0)
+        })
     });
 
 program.parse();
